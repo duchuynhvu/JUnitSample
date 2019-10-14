@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": ["null"]
+        },
+        "userId": {
+            "type": ["string","null"]
+        },
+        "callback": {
+            "type": ["string","null"]
+        },
+        "query": {
+            "type": ["string","null"],
+            "pattern":"(^$)|(^state=$)|(^state=(((Scheduled)|(Processing)|(Completed)|(Failed)),)*((Scheduled)|(Processing)|(Completed)|(Failed))$)"
+        }
+    },
+    "$schema": "http://xxx.ntt.co.jp/schema#",
+    "title": "ListenerInfo PATCH JSON Schema",
+    "description": "Validate ListenerInfo JSON for PATCH"
+}

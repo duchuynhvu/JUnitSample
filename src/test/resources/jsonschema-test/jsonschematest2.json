@@ -1,0 +1,23 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": ["number","null"]
+        },
+        "userId": {
+            "type": ["string","null"]
+        },
+        "callback": {
+            "type": "string"
+        },
+        "query": {
+            "type": "string",
+            "pattern":"(^$)|(^state=$)|(^state=(((Scheduled)|(Processing)|(Completed)|(Failed)),)*((Scheduled)|(Processing)|(Completed)|(Failed))$)"
+        }
+    },
+    "required": ["callback","query"],
+    "$schema": "http://xxx.ntt.co.jp/schema#",
+    "title": "ListenerInfo POST JSON Schema",
+    "description": "Validate ListenerInfo JSON for POST",
+    "additionalProperties": false
+}

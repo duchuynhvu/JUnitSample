@@ -1,0 +1,7 @@
+[
+    {
+        "moduleName": "OPS",
+        "resourceName": "CreateOrder",
+        "url": "http://192.168.17.121:8080/stub/commonrest"
+    }
+]

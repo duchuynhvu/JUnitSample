@@ -1,0 +1,27 @@
+{
+    "definitions": {
+        "ModuleAccess": {
+            "type": "object",
+            "properties": {
+                "moduleName": {
+                    "type": "string",
+                    "enum": ["listener"]
+                },
+                "resourceName": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "required": ["moduleName", "resourceName", "url"]
+        }
+    },
+    "$schema": "http://xxx.ntt.co.jp/schema#",
+    "title": "ModuleAccess JSON Schema",
+    "description": "Validate ModuleAccess JSON",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/ModuleAccess"
+    }
+}

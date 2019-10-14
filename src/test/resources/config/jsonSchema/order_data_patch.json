@@ -1,0 +1,44 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "null"
+        },
+        "description": {
+            "type": ["string","null"]
+        },
+        "notes": {
+            "type": ["string","null"]
+        },
+        "state": {
+            "type": ["string","null"],
+            "enum":["Scheduled","Processing","Completed","Failed"]
+        },
+        "order_date": {
+            "type": ["string","null"]
+        },
+        "modify_date": {
+            "type": ["string","null"]
+        },
+        "notes":{
+            "type": ["array","null"],
+            "items":{
+                "type":"object",
+                "properties":{
+                    "author":{
+                        "type": ["string","null"]
+                    },
+                    "text":{
+                        "type": ["string","null"]
+                    },
+                    "date":{
+                        "type": ["string","null"]
+                    }
+                }
+            }
+        }
+    },
+    "$schema": "http://xxx.ntt.co.jp/schema#",
+    "title": "OrderData PATCH JSON Schema",
+    "description": "Validate OrderData JSON for PATCH"
+}
