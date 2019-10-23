@@ -1,0 +1,45 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": ["string","null"]
+        },
+        "description": {
+            "type": ["string","null"]
+        },
+        "notes": {
+            "type": ["string","null"]
+        },
+        "state": {
+            "type": "string",
+            "enum":["Scheduled","Processing","Completed","Failed"]
+        },
+        "orderDate": {
+            "type": ["string","null"]
+        },
+        "modifyDate": {
+            "type": ["string","null"]
+        },
+        "notes":{
+            "type": ["array","null"],
+            "items":{
+                "type":"object",
+                "properties":{
+                    "author":{
+                        "type": ["string","null"]
+                    },
+                    "text":{
+                        "type": ["string","null"]
+                    },
+                    "date":{
+                        "type": ["string","null"]
+                    }
+                }
+            }
+        }
+    },
+    "required": ["state"],
+    "$schema": "http://xxx.ntt.co.jp/schema#",
+    "title": "OrderData POST JSON Schema",
+    "description": "Validate OrderData JSON for POST"
+}

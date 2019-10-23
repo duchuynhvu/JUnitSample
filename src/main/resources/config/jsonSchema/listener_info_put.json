@@ -1,0 +1,22 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "number"
+        },
+        "userId": {
+            "type": "string"
+        },
+        "callback": {
+            "type": "string"
+        },
+        "query": {
+            "type": "string",
+            "pattern":"(^$)|(^state=$)|(^state=(((Scheduled)|(Processing)|(Completed)|(Failed)),)*((Scheduled)|(Processing)|(Completed)|(Failed))$)"
+        }
+    },
+    "required": ["id","userId","callback","query"],
+    "$schema": "http://xxx.ntt.co.jp/schema#",
+    "title": "ListenerInfo PUT JSON Schema",
+    "description": "Validate ListenerInfo JSON for PUT"
+}
