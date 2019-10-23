@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.powermock.api.mockito.PowerMockito;
 
 import com.tmavn.sample.entity.ListenerInfo;
 import com.tmavn.sample.repository.ListenerInfoRepository;

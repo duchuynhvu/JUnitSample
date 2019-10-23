@@ -93,10 +93,18 @@ public class ApplicationInitTest {
         // --mock static method
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(null);
+        
         // Execute method under test
-        ApplicationInit spyAppInit = PowerMockito.spy(applicationInit);
-        spyAppInit.contextInitialized(mockServletContextEvent);
-        // Verifying: expected = ExceptionInInitializerError.class
+        
+        //#1
+        //ApplicationInit spyAppInit = PowerMockito.spy(applicationInit);
+        //spyAppInit.contextInitialized(mockServletContextEvent);
+        
+        //#2
+        applicationInit.contextInitialized(mockServletContextEvent);
+        
+        // Verify the contextInitialized method is called one time
+        Mockito.verify(applicationInit).contextInitialized(mockServletContextEvent);
         
     }
 
@@ -107,16 +115,24 @@ public class ApplicationInitTest {
     	List<ModuleAccess> list = new ArrayList<ModuleAccess>();
         ModuleAccess moduleAccess = new ModuleAccess();
         list.add(moduleAccess);
+
         // When	
         // --mock static method
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(null);
+
         // Execute method under test
-        ApplicationInit mock = PowerMockito.spy(applicationInit);
-        mock.contextInitialized(mockServletContextEvent);
-        // Verifying: expected = ExceptionInInitializerError.class
+ 
+        //#1
+//        ApplicationInit mock = PowerMockito.spy(applicationInit);
+//        mock.contextInitialized(mockServletContextEvent);
         
+        //#2
+        applicationInit.contextInitialized(mockServletContextEvent);
+        
+        // Verify the contextInitialized method is called one time
+        Mockito.verify(applicationInit).contextInitialized(mockServletContextEvent);
     }
 
     @Test(expected = ExceptionInInitializerError.class)
@@ -132,13 +148,9 @@ public class ApplicationInitTest {
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(new Properties());
         // Execute method under test
-        ApplicationInit mock = PowerMockito.spy(applicationInit);
-        mock.contextInitialized(mockServletContextEvent);
-        // Verifying the contextInitialized method is called
-        Mockito.verify(mock).contextInitialized(mockServletContextEvent);
-
-        //using in case if don't have the expected annotation
-        //Mockito.doThrow(new ExceptionInInitializerError()).when(mock).contextInitialized(mockServletContextEvent);
+        applicationInit.contextInitialized(mockServletContextEvent);
+        // Verifying the contextInitialized method is called one time
+        Mockito.verify(applicationInit).contextInitialized(mockServletContextEvent);
     }
 
     @Test
@@ -158,10 +170,9 @@ public class ApplicationInitTest {
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(properties);
         PowerMockito.when(Utils.class, "checkHibernateConfig", Mockito.any(Properties.class)).thenReturn(true);
         // Execute method under test
-        ApplicationInit mock = PowerMockito.spy(applicationInit);
-        mock.contextInitialized(mockServletContextEvent);
-        // Verifying        
-        Mockito.verify(mock).contextInitialized(mockServletContextEvent);
+        applicationInit.contextInitialized(mockServletContextEvent);
+        // Verify
+        Mockito.verify(applicationInit).contextInitialized(mockServletContextEvent);
     }
 
     @Test(expected = ExceptionInInitializerError.class)
