@@ -7,9 +7,6 @@
         "description": {
             "type": ["string","null"]
         },
-        "notes": {
-            "type": ["string","null"]
-        },
         "state": {
             "type": "string",
             "enum":["Scheduled","Processing","Completed","Failed"]

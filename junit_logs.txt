@@ -1,0 +1,54 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------< tma.com.vn.sample:SampleProject-junit >----------------
+[INFO] Building Sample Maven Webapp 1.0.0
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ SampleProject-junit ---
+[INFO] Deleting D:\workspace-eclipse-2019-09\SampleProject\JUnitSample\target
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.3:prepare-agent (coverage-initialize) @ SampleProject-junit ---
+[INFO] argLine set to -javaagent:C:\\Users\\vdhuynh\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.3\\org.jacoco.agent-0.8.3-runtime.jar=destfile=D:\\workspace-eclipse-2019-09\\SampleProject\\JUnitSample\\target\\jacoco.exec -ea
+ -javaagent:libs/powermock-module-javaagent-2.0.2.jar
+ -noverify
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ SampleProject-junit ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.3:compile (default-compile) @ SampleProject-junit ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 32 source files to D:\workspace-eclipse-2019-09\SampleProject\JUnitSample\target\classes
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by lombok.javac.apt.LombokProcessor to field com.sun.tools.javac.processing.JavacProcessingEnvironment.processorClassLoader
+WARNING: Please consider reporting this to the maintainers of lombok.javac.apt.LombokProcessor
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.302 s
+[INFO] Finished at: 2019-10-18T16:25:58+07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.3:compile (default-compile) on project SampleProject-junit: Fatal error compiling: java.lang.ExceptionInInitializerError: com.sun.tools.javac.code.TypeTags -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------< tma.com.vn.sample:SampleProject-junit >----------------
+[INFO] Building Sample Maven Webapp 1.0.0
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- maven-site-plugin:3.3:site (default-site) @ SampleProject-junit ---
+[WARNING] No project URL defined - decoration links will not be relativized!
+[INFO] Rendering site with org.apache.maven.skins:maven-default-skin:jar:1.0 skin.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.114 s
+[INFO] Finished at: 2019-10-18T16:26:02+07:00
+[INFO] ------------------------------------------------------------------------

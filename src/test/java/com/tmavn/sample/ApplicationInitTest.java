@@ -4,6 +4,7 @@
 package com.tmavn.sample;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
@@ -18,13 +19,16 @@ import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.stubbing.answers.ThrowsException;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
@@ -44,24 +48,36 @@ import com.tmavn.sample.model.ModuleAccess;
         Enumeration.class })
 public class ApplicationInitTest {
 
+	/**
+	 * Khởi tạo mock object như real object
+	 */
     @InjectMocks
     public ApplicationInit applicationInit;
 
+    /**
+     * Khởi tạo để có thể sử dụng các mock annotation
+     */
     @Rule
     public PowerMockRule rule = new PowerMockRule();
 
+    /**
+     * khởi tạo các mock object
+     */
     @Mock
     public AppConfig appConfig;
+    
+    @Mock
+    public ServletContextEvent mockServletContextEvent;
 
     @Mock
     private static Logger spyLogger;
 
-    @Before
-    public void setUp() throws Exception {
-        applicationInit = new ApplicationInit();
-        appConfig = new AppConfig();
-        MockitoAnnotations.initMocks(this);
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//        applicationInit = new ApplicationInit();
+//        appConfig = new AppConfig();
+//        MockitoAnnotations.initMocks(this);
+//    }
 
     /**
      * Test load config success.
@@ -73,84 +89,94 @@ public class ApplicationInitTest {
      */
     @Test(expected = ExceptionInInitializerError.class)
     public void testLoadConfig_exceptionInInitializerError_getModuleAccessList_null() throws Exception {
-        ApplicationInit mock = PowerMockito.spy(applicationInit);
-
+        // When
+        // --mock static method
         PowerMockito.mockStatic(Utils.class);
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(null);
-
-        ServletContextEvent servletContextEvent = mock(ServletContextEvent.class);
-        mock.contextInitialized(servletContextEvent);
+        // Execute method under test
+        ApplicationInit spyAppInit = PowerMockito.spy(applicationInit);
+        spyAppInit.contextInitialized(mockServletContextEvent);
+        // Verifying: expected = ExceptionInInitializerError.class
+        
     }
 
     @Test(expected = ExceptionInInitializerError.class)
     public void testLoadConfig_exceptionInInitializerError_readPropertiesFile_null() throws Exception {
-        PowerMockito.mockStatic(Utils.class);
-
-        List<ModuleAccess> list = new ArrayList<ModuleAccess>();
+        // Given
+        // --define data
+    	List<ModuleAccess> list = new ArrayList<ModuleAccess>();
         ModuleAccess moduleAccess = new ModuleAccess();
         list.add(moduleAccess);
-
+        // When	
+        // --mock static method
+        PowerMockito.mockStatic(Utils.class);
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(null);
-
+        // Execute method under test
         ApplicationInit mock = PowerMockito.spy(applicationInit);
-        ServletContextEvent servletContextEvent = mock(ServletContextEvent.class);
-        mock.contextInitialized(servletContextEvent);
+        mock.contextInitialized(mockServletContextEvent);
+        // Verifying: expected = ExceptionInInitializerError.class
+        
     }
 
     @Test(expected = ExceptionInInitializerError.class)
     public void testLoadConfig_exceptionInInitializerError_checkHibernateConfig() throws Exception {
-        PowerMockito.mockStatic(Utils.class);
-
-        List<ModuleAccess> list = new ArrayList<ModuleAccess>();
+        // Given
+    	// --define data
+    	List<ModuleAccess> list = new ArrayList<ModuleAccess>();
         ModuleAccess moduleAccess = new ModuleAccess();
         list.add(moduleAccess);
-
+        // When
+        // --mock static method
+    	PowerMockito.mockStatic(Utils.class);
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(new Properties());
-
+        // Execute method under test
         ApplicationInit mock = PowerMockito.spy(applicationInit);
-        ServletContextEvent servletContextEvent = mock(ServletContextEvent.class);
-        mock.contextInitialized(servletContextEvent);
+        mock.contextInitialized(mockServletContextEvent);
+        // Verifying the contextInitialized method is called
+        Mockito.verify(mock).contextInitialized(mockServletContextEvent);
+
+        //using in case if don't have the expected annotation
+        //Mockito.doThrow(new ExceptionInInitializerError()).when(mock).contextInitialized(mockServletContextEvent);
     }
 
     @Test
     public void testLoadConfig_success() throws Exception {
-        PowerMockito.mockStatic(Utils.class);
-
+    	// Given
+    	// --define List
         List<ModuleAccess> list = new ArrayList<ModuleAccess>();
         ModuleAccess moduleAccess = new ModuleAccess();
         list.add(moduleAccess);
-
-        PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);
-
+        // --define Properties
         Properties properties = new Properties();
         properties.put("moduleId", "SampleModule");
-
+        // When
+        // --mock static method
+        PowerMockito.mockStatic(Utils.class);
+        PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);        
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(properties);
-
         PowerMockito.when(Utils.class, "checkHibernateConfig", Mockito.any(Properties.class)).thenReturn(true);
-
+        // Execute method under test
         ApplicationInit mock = PowerMockito.spy(applicationInit);
-        ServletContextEvent servletContextEvent = mock(ServletContextEvent.class);
-        mock.contextInitialized(servletContextEvent);
+        mock.contextInitialized(mockServletContextEvent);
+        // Verifying        
+        Mockito.verify(mock).contextInitialized(mockServletContextEvent);
     }
 
     @Test(expected = ExceptionInInitializerError.class)
     public void testLoadConfig_exceptionInInitializerError_propertiesNoContainsKey() throws Exception {
-        PowerMockito.mockStatic(Utils.class);
-
+        // Given
         List<ModuleAccess> list = new ArrayList<ModuleAccess>();
         ModuleAccess moduleAccess = new ModuleAccess();
         list.add(moduleAccess);
+        // When
+        PowerMockito.mockStatic(Utils.class);
         PowerMockito.when(Utils.class, "getModuleAccessList").thenReturn(list);
-
         PowerMockito.when(Utils.class, "checkHibernateConfig", Mockito.any(Properties.class)).thenReturn(true);
         PowerMockito.when(Utils.class, "readPropertiesFile", Mockito.anyString()).thenReturn(new Properties());
-
-        ApplicationInit mock = PowerMockito.spy(applicationInit);
-        ServletContextEvent servletContextEvent = mock(ServletContextEvent.class);
-        mock.contextInitialized(servletContextEvent);
+        // Execute method under test
+        applicationInit.contextInitialized(mockServletContextEvent);
     }
 
     /**
@@ -160,118 +186,92 @@ public class ApplicationInitTest {
      */
     @Test
     public void testEntityManagerFactory_success() throws Exception {
-        LocalContainerEntityManagerFactoryBean factory = PowerMockito
-                .mock(LocalContainerEntityManagerFactoryBean.class);
-        PowerMockito.whenNew(LocalContainerEntityManagerFactoryBean.class).withNoArguments().thenReturn(factory);
-
+    	// Given
+        // --Mock constructor
+    	LocalContainerEntityManagerFactoryBean mockFactory = mock(LocalContainerEntityManagerFactoryBean.class);
+        PowerMockito.whenNew(LocalContainerEntityManagerFactoryBean.class).withNoArguments().thenReturn(mockFactory);
+        // --Mock private field
         Whitebox.setInternalState(ApplicationInit.class, "config", appConfig);
-
+        // Execute method under test
         applicationInit.entityManagerFactory();
     }
 
     @Test
     public void testSimpleDateFormat_success() {
-        SimpleDateFormat test = applicationInit.simpleDateFormat();
-        assertEquals(test.toPattern(), "yyyy-MM-dd HH:mm:ss");
+        // Execute method under test
+    	SimpleDateFormat test = applicationInit.simpleDateFormat();
+        // Verifying
+    	assertEquals(test.toPattern(), "yyyy-MM-dd HH:mm:ss");
     }
 
     @Test
     public void testAsyncRestTemplate_success() {
-        applicationInit.asyncRestTemplate();
+    	// Execute
+    	applicationInit.asyncRestTemplate();
+    	// Verifying
+    	// ...
     }
 
     @Test
     public void testTransactionManager_success() throws Exception {
-
+    	// Given
+    	// --Mock private field
         Whitebox.setInternalState(ApplicationInit.class, "config", appConfig);
-        LocalContainerEntityManagerFactoryBean factory = PowerMockito
-                .mock(LocalContainerEntityManagerFactoryBean.class);
-        PowerMockito.whenNew(LocalContainerEntityManagerFactoryBean.class).withNoArguments().thenReturn(factory);
-
-        applicationInit.transactionManager();
+        // --Mock constructor
+        LocalContainerEntityManagerFactoryBean mockFactory = mock(LocalContainerEntityManagerFactoryBean.class);
+    	PowerMockito.whenNew(LocalContainerEntityManagerFactoryBean.class).withNoArguments().thenReturn(mockFactory);
+        // Execute method under test
+    	applicationInit.transactionManager();
+    	// Verifying
+    	// ...
+    	
     }
 
-    @SuppressWarnings("unchecked")
     @Test
+    @SuppressWarnings("unchecked")
     public void testContextDestroyed_SQLException() throws Exception {
-        org.powermock.reflect.Whitebox.setInternalState(JsonValidation.class, "logger", spyLogger);
-        PowerMockito.mockStatic(DriverManager.class);
-
-        Enumeration<Driver> drivers = mock(Enumeration.class);
+        // Given    	
+		Enumeration<Driver> drivers = mock(Enumeration.class);
+    	Driver driver = mock(Driver.class);
+    	ServletContextEvent event = mock(ServletContextEvent.class);
+    	// When
+    	PowerMockito.mockStatic(DriverManager.class);
         PowerMockito.when(DriverManager.getDrivers()).thenReturn(drivers);
-
         PowerMockito.when(drivers.hasMoreElements()).thenReturn(true).thenReturn(false);
-
-        Driver driver = mock(Driver.class);
         PowerMockito.when(drivers.nextElement()).thenReturn(driver);
-
+        // --Defining exception
         PowerMockito.doThrow(new SQLException()).when(DriverManager.class);
         DriverManager.deregisterDriver(driver);
-
-        ServletContextEvent event = PowerMockito.mock(ServletContextEvent.class);
-
-        // execute
+        // Execute method under test
         applicationInit.contextDestroyed(event);
-
-        // verify
+        // verifying
         PowerMockito.verifyStatic(DriverManager.class);
         DriverManager.deregisterDriver(driver);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContextDestroyed_SQLExceptionConfigNull() throws Exception {
-        org.powermock.reflect.Whitebox.setInternalState(JsonValidation.class, "logger", spyLogger);
-        PowerMockito.mockStatic(DriverManager.class);
-
-        Enumeration<Driver> drivers = mock(Enumeration.class);
-        PowerMockito.when(DriverManager.getDrivers()).thenReturn(drivers);
-
-        PowerMockito.when(drivers.hasMoreElements()).thenReturn(true).thenReturn(false);
-
-        Driver driver = mock(Driver.class);
-        PowerMockito.when(drivers.nextElement()).thenReturn(driver);
-
-        PowerMockito.doThrow(new SQLException()).when(DriverManager.class);
-        DriverManager.deregisterDriver(driver);
-
-        ServletContextEvent event = PowerMockito.mock(ServletContextEvent.class);
-
-//        AppConfig appConfig = null;
-        Whitebox.setInternalState(ApplicationInit.class, "config", appConfig);
-        // execute
-        applicationInit.contextDestroyed(event);
-
-        // verify
-        PowerMockito.verifyStatic(DriverManager.class);
-        DriverManager.deregisterDriver(driver);
-    }
-
     @SuppressWarnings("unchecked")
-    @Test
     public void testContextDestroyed_success() throws Exception {
-        org.powermock.reflect.Whitebox.setInternalState(JsonValidation.class, "logger", spyLogger);
+        // Given
+    	// --Mock private field
         Whitebox.setInternalState(ApplicationInit.class, "config", appConfig);
-        PowerMockito.mockStatic(DriverManager.class);
-
-        Enumeration<Driver> drivers = mock(Enumeration.class);
-        PowerMockito.when(DriverManager.getDrivers()).thenReturn(drivers);
-
+		Enumeration<Driver> drivers = mock(Enumeration.class);
+		Driver driver = mock(Driver.class);
+        ServletContextEvent mockEvent = mock(ServletContextEvent.class);
+		// When
+		PowerMockito.mockStatic(DriverManager.class);
+		PowerMockito.when(DriverManager.getDrivers()).thenReturn(drivers);
         PowerMockito.when(drivers.hasMoreElements()).thenReturn(true).thenReturn(false);
-
-        Driver driver = mock(Driver.class);
         PowerMockito.when(drivers.nextElement()).thenReturn(driver);
-
-        ServletContextEvent event = PowerMockito.mock(ServletContextEvent.class);
-        // execute
-        applicationInit.contextDestroyed(event);
+        // Execute method under test
+        applicationInit.contextDestroyed(mockEvent);
+        // Verifying
         PowerMockito.verifyStatic(DriverManager.class);
         DriverManager.getDrivers();
     }
     
-
     @SuppressWarnings("unchecked")
-    @Test
+	@Test
     public void testContextDestroyed_configIsNull_success() throws Exception {
         org.powermock.reflect.Whitebox.setInternalState(JsonValidation.class, "logger", spyLogger);
         appConfig = null;
